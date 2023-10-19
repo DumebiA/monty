@@ -26,13 +26,13 @@ void read_file(char *filename, stack_t **stack)
 
     while (fgets(var_global.buffer, i, var_global.file) != NULL)
     {
-        line = parse_line(var_global.buffer, stack, line_count);
+        line = par_se(var_global.buffer, stack, line_count);
         if (line == NULL || line[0] == '#')
         {
             line_count++;
             continue;
         }
-        s = get_op_func(line);
+        s = get_func(line);
         if (s == NULL)
         {
             fprintf(stderr, "L%d: unknown instruction %s\n", line_count, line);
@@ -49,15 +49,15 @@ void read_file(char *filename, stack_t **stack)
 
 
 /**
- * get_op_func -  checks opcode and returns the correct function
- * @str: the opcode
+ * get_func -  checks opcode and returns the correct function
+ * @s: the opcode
  * Return: returns a functions, or NULL on failure
  */
-instruct_func get_op_func(char *str)
+instruct_func get_func(char *s)
 {
-	int i;
+	int n;
 
-	instruction_t instruct[] = {
+	instruction_t inst[] = {
 		{"push", _push},
 		{"pall", _pall},
 		{"pint", _pint},
@@ -76,70 +76,70 @@ instruct_func get_op_func(char *str)
 		{NULL, NULL},
 	};
 
-	i = 0;
-	while (instruct[i].f != NULL && strcmp(instruct[i].opcode, str) != 0)
+	n = 0;
+	while (inst[n].f != NULL && strcmp(inst[n].opcode, s) != 0)
 	{
-		i++;
+		n++;
 	}
 
-	return (instruct[i].f);
+	return (inst[n].f);
 }
 
 /**
- * isnumber - checks if a string is a number
- * @str: string being passed
+ * is_num - checks if a string is a number
+ * @c: string being passed
  * Return: returns 1 if string is a number, 0 otherwise
  */
-int isnumber(char *str)
+int is_num(char *c)
 {
-	unsigned int i;
+	unsigned int n;
 
-	if (str == NULL)
+	if (c == NULL)
 		return (0);
-	i = 0;
-	while (str[i])
+	n = 0;
+	while (c[n])
 	{
-		if (str[0] == '-')
+		if (c[0] == '-')
 		{
-			i++;
+			n++;
 			continue;
 		}
-		if (!isdigit(str[i]))
+		if (!isdigit(c[n]))
 			return (0);
-		i++;
+		n++;
 	}
 	return (1);
 }
 
 /**
- * parse_line - parses a line for an opcode and arguments
- * @line: the line to be parsed
- * @stack: pointer to the head of the stack
- * @line_number: the current line number
+ * par_se - parses a line for an opcode and arguments
+ * @l: the line to be parsed
+ * @s: pointer to the head of the stack
+ * @ln: the current line number
  * Return: returns the opcode or null on failure
  */
-char *parse_line(char *line, stack_t **stack, unsigned int line_number)
+char *par_se(char *l, stack_t **s, unsigned int ln)
 {
-	char *op_code, *push, *arg;
-	(void)stack;
+	char *op, *c, *arg;
+	(void)s;
 
-	push = "push";
-	op_code = strtok(line, "\n ");
-	if (op_code == NULL)
+	c = "push";
+	op = strtok(l, "\n ");
+	if (op == NULL)
 		return (NULL);
 
-	if (strcmp(op_code, push) == 0)
+	if (strcmp(op, c) == 0)
 	{
 		arg = strtok(NULL, "\n ");
-		if (isnumber(arg) == 1 && arg != NULL)
+		if (is_num(arg) == 1 && arg != NULL)
 		{
 			var_global.push_arg = atoi(arg);
 		}
 		else
 		{
-			fprintf(stderr, "L%d: usage: push integer\n", line_number);
+			fprintf(stderr, "L%d: usage: push integer\n", ln);
 			exit(EXIT_FAILURE);
 		}
 	}
-	return (op_code);
+	return (op);
 }

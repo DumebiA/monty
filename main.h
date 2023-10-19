@@ -7,7 +7,6 @@
 #include <unistd.h>
 #include <ctype.h>
 
-/*--- Struct Definitions ---*/
 extern int push_arg;
 
 /**
@@ -56,9 +55,9 @@ typedef struct global_variable
 extern global_var var_global;
 
 void read_file(char *filename, stack_t **stack);
-char *parse_line(char *line, stack_t **stack, unsigned int line_number);
+char *par_se(char *l, stack_t **s, unsigned int ln);
 typedef void (*instruct_func)(stack_t **stack, unsigned int line_number);
-instruct_func get_op_func(char *str);
+instruct_func get_func(char *s);
 
 /*Fuxntions Monty*/
 void _pall(stack_t **stack, unsigned int line_number);
@@ -81,9 +80,9 @@ void _mul(stack_t **stack, unsigned int line_number);
 void _div(stack_t **stack, unsigned int line_number);
 void _mod(stack_t **stack, unsigned int line_number);
 
-/*Utility functions*/
 void free_dlistint(stack_t *head);
 void dobfree(stack_t **stack);
 void dobfree2(stack_t **stack);
 int _isalpha(int c);
+
 #endif
