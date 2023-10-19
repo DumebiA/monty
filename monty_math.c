@@ -1,4 +1,4 @@
-#include "monty.h"
+#include "main.h"
 
 /**
  * _sub - sub top of stack y second top stack

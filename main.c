@@ -1,4 +1,4 @@
-#include "monty.h"
+#include "main.h"
 global_var var_global;
 /**
  * main - driver function for monty program

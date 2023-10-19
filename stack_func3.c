@@ -1,4 +1,4 @@
-#include "monty.h"
+#include "main.h"
 
 /**
  * _pstr - mod top of stack y second top stack
